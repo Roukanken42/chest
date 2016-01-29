@@ -49,6 +49,9 @@ var ActiveTabList = React.createClass({
 
     componentDidMount: function() {
         this.reload()      
+        chrome.tabs.onRemoved.addListener(function(id, info){
+            this.reload()
+        }.bind(this))
     },
 
     handleClick: function(tab){
@@ -89,6 +92,9 @@ var StoredTabList = React.createClass({
 
     componentDidMount: function() {
         this.reload()      
+        chrome.storage.onChanged.addListener(function(changes, areaName){
+            this.reload()
+        }.bind(this))
     },
 
     handleClick: function(tab){
