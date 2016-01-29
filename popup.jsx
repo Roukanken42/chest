@@ -1,5 +1,3 @@
-//chrome.storage.sync.set({tabs: []})
-
 function saveTab(tab) {
     chrome.storage.sync.get({"tabs": []}, function(data){
         data.tabs.push(tab)
@@ -54,8 +52,9 @@ var ActiveTabList = React.createClass({
     },
 
     handleClick: function(tab){
-        chrome.tabs.remove(tab.id)
-        this.reload()
+        chrome.tabs.remove(tab.id, function(){
+            this.reload()
+        }.bind(this))
         saveTab(tab)
     },
 
