@@ -1,3 +1,7 @@
+function eraseStorage() {
+    chrome.storage.sync.set({"tabs": []})
+}
+
 function saveTab(tab) {
     chrome.storage.sync.get({"tabs": []}, function(data){
         data.tabs.push(tab)
@@ -23,13 +27,11 @@ function deleteTab(tab) {
 var TabButton = React.createClass({
     render: function(){
         return (
-            <a className="item" id={this.props.tab.id}> 
-                <button className="ui small button" onClick={this.props.onClick}> 
-                    <img src={this.props.tab.favIconUrl} height={15} width={15}/>  
-                      
-                    {this.props.tab.title}
-                </button>
-            </a>
+            <button className="ui small segment button" onClick={this.props.onClick} style={{width: "100%"}}> 
+                <img src={this.props.tab.favIconUrl} style={{height:12, width:12}}/>  
+                  
+                {this.props.tab.title}
+            </button>
         )
     },
 })
@@ -70,7 +72,7 @@ var ActiveTabList = React.createClass({
         )
 
         return (
-            <div className="ui small vertical list">
+            <div className="ui segments">
                 {buttons}
             </div>
         );
@@ -112,7 +114,7 @@ var StoredTabList = React.createClass({
         )
 
         return (
-            <div className="ui small vertical list">
+            <div className="ui segments">
                 {buttons}
             </div>
         );
@@ -123,14 +125,23 @@ var StoredTabList = React.createClass({
 var Content = React.createClass({
     render: function() {
         return (
-            <div className="ui container">
-                <h1>Open tabs</h1>
-                <ActiveTabList/>
-                <br/>
-                <h1>Stored tabs</h1>
-                <StoredTabList/>
+            <div>
+                <div className="ui tabular menu">
+                    <a className="item" data-tab="stored">Stored tabs</a>
+                    <a className="item active" data-tab="active">Active tabs</a>
+                </div>
+                <div className="ui tab" data-tab="stored">
+                    <StoredTabList/>
+                </div>
+                <div className="ui tab active" data-tab="active">
+                    <ActiveTabList/>
+                </div>
             </div>
         )   
+    },
+
+    componentDidMount: function(){
+        $('.menu .item').tab();
     }
 })
 
@@ -139,4 +150,3 @@ ReactDOM.render(
     <Content/>,
     document.getElementById('content')
 );
-
