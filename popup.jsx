@@ -44,7 +44,18 @@ var ActiveTabList = React.createClass({
     reload: function(){
         chrome.tabs.query({}, 
             function(tabs) {
-                this.setState({tabs: tabs})
+                var data = new Array()
+
+                tabs.map(function(tab){
+                    if (!(tab.windowId in data)){
+                        data[tab.windowId] = new Array()
+                    }
+
+                    data[tab.windowId].push(tab)
+                })
+
+                this.setState({"tabs": data})
+                $('.menu .item').tab();
             }.bind(this)
         )  
     },
@@ -54,6 +65,7 @@ var ActiveTabList = React.createClass({
         chrome.tabs.onRemoved.addListener(function(id, info){
             this.reload()
         }.bind(this))
+        
     },
 
     handleClick: function(tab){
@@ -64,18 +76,39 @@ var ActiveTabList = React.createClass({
     },
 
     render: function() {
-        var buttons = this.state.tabs.map(function(tab) {
-                return (
-                    <TabButton tab={tab} onClick={this.handleClick.bind(this, tab)}></TabButton>
-                )
-            }.bind(this)
-        )
+        var headers = new Array()
+        var tabs = new Array()
+
+        for (var id in this.state.tabs){
+            headers.push(
+                <a className="item" data-tab={id}>{id}</a>
+            )
+
+            var buttons = this.state.tabs[id].map(function(tab){
+                return <TabButton tab={tab} onClick={this.handleClick.bind(this, tab)}></TabButton>
+            }.bind(this))
+
+            console.log(buttons)
+
+            tabs.push(
+                <div className="ui tab segments" data-tab={id}>
+                    {buttons}
+                </div>
+            )
+        }
+
+        chrome.windows.getLastFocused(function(win){
+            $("[data-tab|='" + win.id + "'").addClass("active")
+        })
 
         return (
-            <div className="ui segments">
-                {buttons}
+            <div>
+                <div className="ui tabular menu">
+                    {headers}
+                </div>
+                {tabs}
             </div>
-        );
+        )
     }
 });
 
@@ -108,7 +141,7 @@ var StoredTabList = React.createClass({
     render: function() {
         var buttons = this.state.tabs.map(function(tab) {
                 return (
-                    <TabButton tab={tab} onClick={this.handleClick.bind(this, tab)}></TabButton>
+                    <TabButton tab={tab} key={tab.id} onClick={this.handleClick.bind(this, tab)}></TabButton>
                 )
             }.bind(this)
         )
