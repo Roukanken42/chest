@@ -1,7 +1,3 @@
-function eraseStorage() {
-    chrome.storage.sync.set({"tabs": []})
-}
-
 function saveTab(tab) {
     chrome.storage.sync.get({"tabs": []}, function(data){
         data.tabs.push(tab)
@@ -27,11 +23,16 @@ function deleteTab(tab) {
 var TabButton = React.createClass({
     render: function(){
         return (
-            <button className="ui small segment button" onClick={this.props.onClick} style={{width: "100%"}}> 
-                <img src={this.props.tab.favIconUrl} style={{height:12, width:12}}/>  
-                  
-                {this.props.tab.title}
-            </button>
+            <div className="ui segments horizontal button">
+                <button className="ui small segment button" onClick={this.props.onClick} style={{width: "100%"}}> 
+                    <img src={this.props.tab.favIconUrl} style={{height:12, width:12}}/>  
+                      
+                    {this.props.tab.title}
+                </button>
+                <button className="ui segment button right floated" onClick={this.props.onDelete}>
+                    <img src={this.props.tab.favIconUrl} style={{height:15, width:15}}/> 
+                </button>
+            </div>
         )
     },
 })
@@ -75,6 +76,12 @@ var ActiveTabList = React.createClass({
         saveTab(tab)
     },
 
+    handleRemove: function(tab){
+        chrome.tabs.remove(tab.id, function(){
+            this.reload()
+        }.bind(this))
+    },
+
     render: function() {
         var headers = new Array()
         var tabs = new Array()
@@ -85,7 +92,13 @@ var ActiveTabList = React.createClass({
             )
 
             var buttons = this.state.tabs[id].map(function(tab){
-                return <TabButton tab={tab} onClick={this.handleClick.bind(this, tab)}></TabButton>
+                return <TabButton 
+                    key={tab.id} 
+                    tab={tab} 
+                    onClick={this.handleClick.bind(this, tab)} 
+                    onDelete={this.handleRemove.bind(this, tab)} 
+                >
+                </TabButton>
             }.bind(this))
 
             console.log(buttons)
@@ -141,7 +154,7 @@ var StoredTabList = React.createClass({
     render: function() {
         var buttons = this.state.tabs.map(function(tab) {
                 return (
-                    <TabButton tab={tab} key={tab.id} onClick={this.handleClick.bind(this, tab)}></TabButton>
+                    <TabButton tab={tab} key={tab.id} onClick={this.handleClick.bind(this, tab)} onDelete={deleteTab.bind(tab)}></TabButton>
                 )
             }.bind(this)
         )
