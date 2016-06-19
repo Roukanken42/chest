@@ -30,7 +30,7 @@ var TabButton = React.createClass({
                     {this.props.tab.title}
                 </button>
                 <button className="ui segment button right floated" onClick={this.props.onDelete}>
-                    <img src={this.props.tab.favIconUrl} style={{height:15, width:15}}/> 
+                    <img src="cancel.png" style={{height:15, width:15}}/> 
                 </button>
             </div>
         )
