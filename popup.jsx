@@ -79,11 +79,30 @@ var TabButton = React.createClass({
     },
 })
 
+
+/**
+ * React element for showing list of windows with tabs in them
+ * @class ActiveTabList
+ */
 var ActiveTabList = React.createClass({
+    /**
+     * Internal list of tabs
+     * @private
+     * @property tabs
+     */
+
+    /**
+     * Gets initial state of element
+     * @method getInitialState
+     */
     getInitialState: function(){
         return {tabs:[]}
     },
 
+    /**
+     * Reloads data from cloud storage
+     * @method reload
+     */
     reload: function(){
         chrome.tabs.query({}, 
             function(tabs) {
@@ -103,6 +122,10 @@ var ActiveTabList = React.createClass({
         )  
     },
 
+    /**
+     * Initialy fills component with data and registers listener
+     * @function componentDidMount
+     */
     componentDidMount: function() {
         this.reload()      
         chrome.tabs.onRemoved.addListener(function(id, info){
@@ -111,19 +134,33 @@ var ActiveTabList = React.createClass({
         
     },
 
-    handleClick: function(tab){
+    /**
+     * Stores tab in cloud storage
+     * @method storeTab
+     * @param {Tab} tab Info to store
+     */
+    storeTab: function(tab){
         chrome.tabs.remove(tab.id, function(){
             this.reload()
         }.bind(this))
         saveTab(tab)
     },
 
-    handleRemove: function(tab){
+    /**
+     * Closes tab
+     * @method closeTab
+     * @param {Tab} tab Info of tab to be closed
+     */
+    closeTab: function(tab){
         chrome.tabs.remove(tab.id, function(){
             this.reload()
         }.bind(this))
     },
 
+    /**
+     * Render this element
+     * @method render
+     */
     render: function() {
         var headers = new Array()
         var tabs = new Array()
@@ -137,8 +174,8 @@ var ActiveTabList = React.createClass({
                 return <TabButton 
                     key={tab.id} 
                     tab={tab} 
-                    onClick={this.handleClick.bind(this, tab)} 
-                    onDelete={this.handleRemove.bind(this, tab)} 
+                    onClick={this.storeTab.bind(this, tab)} 
+                    onDelete={this.closeTab.bind(this, tab)} 
                 >
                 </TabButton>
             }.bind(this))
