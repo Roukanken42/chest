@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>popup.js</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="../assets/css/logo.png" title="" width="117" height="52"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/ActiveTabList.html">ActiveTabList</a></li>
+                                <li><a href="../classes/Content.html">Content</a></li>
+                                <li><a href="../classes/Standalone.html">Standalone</a></li>
+                                <li><a href="../classes/StoredTabList.html">StoredTabList</a></li>
+                                <li><a href="../classes/TabButton.html">TabButton</a></li>
+                            </ul>
+                
+                
+                            <ul id="api-modules" class="apis modules">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1 class="file-heading">File: popup.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require==&quot;function&quot;&amp;&amp;require;if(!u&amp;&amp;a)return a(o,!0);if(i)return i(o,!0);var f=new Error(&quot;Cannot find module &#x27;&quot;+o+&quot;&#x27;&quot;);throw f.code=&quot;MODULE_NOT_FOUND&quot;,f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require==&quot;function&quot;&amp;&amp;require;for(var o=0;o&lt;r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+/**
+ * Standalone functions
+ * @class Standalone
+ */
+
+/**
+ * Saves tab to storage.sync
+ *
+ * @method saveTab
+ * @param {Tab} tab Info to save
+ */
+function saveTab(tab) {
+    chrome.storage.sync.get({ &quot;tabs&quot;: [] }, function (data) {
+        data.tabs.push(tab);
+        chrome.storage.sync.set(data);
+    });
+}
+
+/**
+ * Deletes tab from storage.sync
+ *
+ * @method deleteTab
+ * @param {Tab} tab Item to delete - checks .id and .url
+ */
+function deleteTab(tab) {
+    chrome.storage.sync.get({ &quot;tabs&quot;: [] }, function (data) {
+        var index = data.tabs.lenght + 20;
+
+        for (var i = 0; i &lt; data.tabs.length; i++) {
+            if (data.tabs[i].id === tab.id &amp;&amp; data.tabs[i].url === tab.url) index = i;
+        }
+
+        data.tabs.splice(index, 1);
+        chrome.storage.sync.set(data);
+    });
+}
+
+/**
+ * React element for showing one tab
+ * @class TabButton
+ */
+
+/**
+ * Tab info 
+ * @property tab {Tab}
+ */
+
+/**
+ * Function callback called on clicking main button
+ * @property onClick {function}
+ */
+
+/**
+ * Function callback called on clikcking delete button
+ * @property onDelete {function}
+ */
+
+var TabButton = React.createClass({
+    displayName: &quot;TabButton&quot;,
+
+    /**
+     * Renders this element
+     * @method render
+     */
+    render: function () {
+        return React.createElement(
+            &quot;div&quot;,
+            { className: &quot;ui segments horizontal button&quot; },
+            React.createElement(
+                &quot;button&quot;,
+                { className: &quot;ui small segment button&quot;, onClick: this.props.onClick, style: { width: &quot;100%&quot; } },
+                React.createElement(&quot;img&quot;, { src: this.props.tab.favIconUrl, style: { height: 15, width: 15 } }),
+                this.props.tab.title
+            ),
+            React.createElement(
+                &quot;button&quot;,
+                { className: &quot;ui segment button right floated&quot;, onClick: this.props.onDelete },
+                React.createElement(&quot;img&quot;, { src: &quot;cancel.png&quot;, style: { height: 15, width: 15 } })
+            )
+        );
+    }
+});
+
+/**
+ * React element for showing list of windows with tabs in them
+ * @class ActiveTabList
+ */
+var ActiveTabList = React.createClass({
+    displayName: &quot;ActiveTabList&quot;,
+
+    /**
+     * Internal list of tabs
+     * @private
+     * @property tabs
+     */
+
+    /**
+     * Gets initial state of element
+     * @method getInitialState
+     */
+    getInitialState: function () {
+        return { tabs: [] };
+    },
+
+    /**
+     * Reloads data from cloud storage
+     * @method reload
+     */
+    reload: function () {
+        chrome.tabs.query({}, function (tabs) {
+            var data = new Array();
+
+            tabs.map(function (tab) {
+                if (!(tab.windowId in data)) {
+                    data[tab.windowId] = new Array();
+                }
+
+                data[tab.windowId].push(tab);
+            });
+
+            this.setState({ &quot;tabs&quot;: data });
+            $(&#x27;.menu .item&#x27;).tab();
+        }.bind(this));
+    },
+
+    /**
+     * Initialy fills component with data and registers listener
+     * @function componentDidMount
+     */
+    componentDidMount: function () {
+        this.reload();
+        chrome.tabs.onRemoved.addListener(function (id, info) {
+            this.reload();
+        }.bind(this));
+    },
+
+    /**
+     * Stores tab in cloud storage
+     * @method storeTab
+     * @param {Tab} tab Info to store
+     */
+    storeTab: function (tab) {
+        chrome.tabs.remove(tab.id, function () {
+            this.reload();
+        }.bind(this));
+        saveTab(tab);
+    },
+
+    /**
+     * Closes tab
+     * @method closeTab
+     * @param {Tab} tab Info of tab to be closed
+     */
+    closeTab: function (tab) {
+        chrome.tabs.remove(tab.id, function () {
+            this.reload();
+        }.bind(this));
+    },
+
+    /**
+     * Render this element
+     * @method render
+     */
+    render: function () {
+        var headers = new Array();
+        var tabs = new Array();
+
+        var window_number = 1;
+
+        for (var id in this.state.tabs) {
+            headers.push(React.createElement(
+                &quot;a&quot;,
+                { className: &quot;item&quot;, &quot;data-tab&quot;: id },
+                &quot;Window &quot; + window_number
+            ));
+
+            window_number += 1;
+
+            var buttons = this.state.tabs[id].map(function (tab) {
+                return React.createElement(TabButton, {
+                    key: tab.id,
+                    tab: tab,
+                    onClick: this.storeTab.bind(this, tab),
+                    onDelete: this.closeTab.bind(this, tab)
+                });
+            }.bind(this));
+
+            console.log(buttons);
+
+            tabs.push(React.createElement(
+                &quot;div&quot;,
+                { className: &quot;ui tab segments&quot;, &quot;data-tab&quot;: id },
+                buttons
+            ));
+        }
+
+        chrome.windows.getLastFocused(function (win) {
+            $(&quot;[data-tab|=&#x27;&quot; + win.id + &quot;&#x27;&quot;).addClass(&quot;active&quot;);
+        });
+
+        return React.createElement(
+            &quot;div&quot;,
+            null,
+            React.createElement(
+                &quot;div&quot;,
+                { className: &quot;ui tabular menu&quot; },
+                headers
+            ),
+            tabs
+        );
+    }
+});
+
+/**
+ * React element for showing tabs held in storage.sync
+ * @class StoredTabList
+ */
+var StoredTabList = React.createClass({
+    displayName: &quot;StoredTabList&quot;,
+
+    /**
+     * Internal list of tabs
+     * @private
+     * @property tabs
+     */
+
+    /**
+     * Gets initial state of element
+     * @method getInitialState
+     */
+    getInitialState: function () {
+        return { tabs: [] };
+    },
+
+    /**
+     * Reloads data from cloud storage
+     * @method reload
+     */
+    reload: function () {
+        chrome.storage.sync.get({ tabs: [] }, function (data) {
+            this.setState({ tabs: data.tabs });
+        }.bind(this));
+    },
+
+    /**
+     * Initialy fills component with data and registers listener
+     * @function componentDidMount
+     */
+    componentDidMount: function () {
+        this.reload();
+        chrome.storage.onChanged.addListener(function (changes, areaName) {
+            this.reload();
+        }.bind(this));
+    },
+
+    /**
+     * Restore tab from cloud storage and erase it
+     * @method restoreTab
+     * @param {Tab} tab Info about restored tab
+     */
+    restoreTab: function (tab) {
+        deleteTab(tab);
+        chrome.tabs.create({ url: tab.url });
+        this.reload();
+    },
+
+    /**
+     * Helper function to delete tab
+     * @method handleDelete
+     * @param {Tab} tab Tab to be deleted
+     */
+    handleDelete: function (tab) {
+        deleteTab(tab);
+        this.reload();
+    },
+
+    /**
+     * Render this element
+     * @method render
+     */
+    render: function () {
+        var buttons = this.state.tabs.map(function (tab) {
+            return React.createElement(TabButton, {
+                tab: tab,
+                key: tab.id,
+                onClick: this.restoreTab.bind(this, tab),
+                onDelete: this.handleDelete.bind(this, tab)
+            });
+        }.bind(this));
+
+        return React.createElement(
+            &quot;div&quot;,
+            { className: &quot;ui segments&quot; },
+            buttons
+        );
+    }
+});
+
+/**
+ * Master react element. Holds ActiveTabList and StoredTabList
+ * @class Content
+ */
+var Content = React.createClass({
+    displayName: &quot;Content&quot;,
+
+    /**
+     * Render this elemtent
+     * @method render
+     */
+    render: function () {
+        return React.createElement(
+            &quot;div&quot;,
+            null,
+            React.createElement(
+                &quot;div&quot;,
+                { className: &quot;ui tabular menu&quot; },
+                React.createElement(
+                    &quot;a&quot;,
+                    { className: &quot;item&quot;, &quot;data-tab&quot;: &quot;stored&quot; },
+                    &quot;Stored tabs&quot;
+                ),
+                React.createElement(
+                    &quot;a&quot;,
+                    { className: &quot;item active&quot;, &quot;data-tab&quot;: &quot;active&quot; },
+                    &quot;Active tabs&quot;
+                )
+            ),
+            React.createElement(
+                &quot;div&quot;,
+                { className: &quot;ui tab&quot;, &quot;data-tab&quot;: &quot;stored&quot; },
+                React.createElement(StoredTabList, null)
+            ),
+            React.createElement(
+                &quot;div&quot;,
+                { className: &quot;ui tab active&quot;, &quot;data-tab&quot;: &quot;active&quot; },
+                React.createElement(ActiveTabList, null)
+            )
+        );
+    },
+
+    /**
+     * Initialize tab logic
+     * @method componentDidMount
+     */
+    componentDidMount: function () {
+        $(&#x27;.menu .item&#x27;).tab();
+    }
+});
+
+ReactDOM.render(React.createElement(Content, null), document.getElementById(&#x27;content&#x27;));
+
+},{}]},{},[1]);
+
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

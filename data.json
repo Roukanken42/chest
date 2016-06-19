@@ -1,0 +1,319 @@
+{
+    "project": {},
+    "files": {
+        "popup.js": {
+            "name": "popup.js",
+            "modules": {},
+            "classes": {
+                "Standalone": 1,
+                "TabButton": 1,
+                "ActiveTabList": 1,
+                "StoredTabList": 1,
+                "Content": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {},
+    "classes": {
+        "Standalone": {
+            "name": "Standalone",
+            "shortname": "Standalone",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "popup.js",
+            "line": 2,
+            "description": "Standalone functions"
+        },
+        "TabButton": {
+            "name": "TabButton",
+            "shortname": "TabButton",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "popup.js",
+            "line": 39,
+            "description": "React element for showing one tab"
+        },
+        "ActiveTabList": {
+            "name": "ActiveTabList",
+            "shortname": "ActiveTabList",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "popup.js",
+            "line": 85,
+            "description": "React element for showing list of windows with tabs in them"
+        },
+        "StoredTabList": {
+            "name": "StoredTabList",
+            "shortname": "StoredTabList",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "popup.js",
+            "line": 215,
+            "description": "React element for showing tabs held in storage.sync"
+        },
+        "Content": {
+            "name": "Content",
+            "shortname": "Content",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "popup.js",
+            "line": 300,
+            "description": "Master react element. Holds ActiveTabList and StoredTabList"
+        }
+    },
+    "elements": {},
+    "classitems": [
+        {
+            "file": "popup.js",
+            "line": 7,
+            "description": "Saves tab to storage.sync",
+            "itemtype": "method",
+            "name": "saveTab",
+            "params": [
+                {
+                    "name": "tab",
+                    "description": "Info to save",
+                    "type": "Tab"
+                }
+            ],
+            "class": "Standalone"
+        },
+        {
+            "file": "popup.js",
+            "line": 20,
+            "description": "Deletes tab from storage.sync",
+            "itemtype": "method",
+            "name": "deleteTab",
+            "params": [
+                {
+                    "name": "tab",
+                    "description": "Item to delete - checks .id and .url",
+                    "type": "Tab"
+                }
+            ],
+            "class": "Standalone"
+        },
+        {
+            "file": "popup.js",
+            "line": 44,
+            "description": "Tab info",
+            "itemtype": "property",
+            "name": "tab",
+            "type": "Tab",
+            "class": "TabButton"
+        },
+        {
+            "file": "popup.js",
+            "line": 49,
+            "description": "Function callback called on clicking main button",
+            "itemtype": "property",
+            "name": "onClick",
+            "type": "Function",
+            "class": "TabButton"
+        },
+        {
+            "file": "popup.js",
+            "line": 54,
+            "description": "Function callback called on clikcking delete button",
+            "itemtype": "property",
+            "name": "onDelete",
+            "type": "Function",
+            "class": "TabButton"
+        },
+        {
+            "file": "popup.js",
+            "line": 62,
+            "description": "Renders this element",
+            "itemtype": "method",
+            "name": "render",
+            "class": "TabButton"
+        },
+        {
+            "file": "popup.js",
+            "line": 92,
+            "description": "Internal list of tabs",
+            "access": "private",
+            "tagname": "",
+            "itemtype": "property",
+            "name": "tabs",
+            "class": "ActiveTabList"
+        },
+        {
+            "file": "popup.js",
+            "line": 98,
+            "description": "Gets initial state of element",
+            "itemtype": "method",
+            "name": "getInitialState",
+            "class": "ActiveTabList"
+        },
+        {
+            "file": "popup.js",
+            "line": 106,
+            "description": "Reloads data from cloud storage",
+            "itemtype": "method",
+            "name": "reload",
+            "class": "ActiveTabList"
+        },
+        {
+            "file": "popup.js",
+            "line": 127,
+            "description": "Initialy fills component with data and registers listener",
+            "itemtype": "method",
+            "name": "componentDidMount",
+            "class": "ActiveTabList"
+        },
+        {
+            "file": "popup.js",
+            "line": 138,
+            "description": "Stores tab in cloud storage",
+            "itemtype": "method",
+            "name": "storeTab",
+            "params": [
+                {
+                    "name": "tab",
+                    "description": "Info to store",
+                    "type": "Tab"
+                }
+            ],
+            "class": "ActiveTabList"
+        },
+        {
+            "file": "popup.js",
+            "line": 150,
+            "description": "Closes tab",
+            "itemtype": "method",
+            "name": "closeTab",
+            "params": [
+                {
+                    "name": "tab",
+                    "description": "Info of tab to be closed",
+                    "type": "Tab"
+                }
+            ],
+            "class": "ActiveTabList"
+        },
+        {
+            "file": "popup.js",
+            "line": 161,
+            "description": "Render this element",
+            "itemtype": "method",
+            "name": "render",
+            "class": "ActiveTabList"
+        },
+        {
+            "file": "popup.js",
+            "line": 222,
+            "description": "Internal list of tabs",
+            "access": "private",
+            "tagname": "",
+            "itemtype": "property",
+            "name": "tabs",
+            "class": "StoredTabList"
+        },
+        {
+            "file": "popup.js",
+            "line": 228,
+            "description": "Gets initial state of element",
+            "itemtype": "method",
+            "name": "getInitialState",
+            "class": "StoredTabList"
+        },
+        {
+            "file": "popup.js",
+            "line": 236,
+            "description": "Reloads data from cloud storage",
+            "itemtype": "method",
+            "name": "reload",
+            "class": "StoredTabList"
+        },
+        {
+            "file": "popup.js",
+            "line": 246,
+            "description": "Initialy fills component with data and registers listener",
+            "itemtype": "method",
+            "name": "componentDidMount",
+            "class": "StoredTabList"
+        },
+        {
+            "file": "popup.js",
+            "line": 257,
+            "description": "Restore tab from cloud storage and erase it",
+            "itemtype": "method",
+            "name": "restoreTab",
+            "params": [
+                {
+                    "name": "tab",
+                    "description": "Info about restored tab",
+                    "type": "Tab"
+                }
+            ],
+            "class": "StoredTabList"
+        },
+        {
+            "file": "popup.js",
+            "line": 268,
+            "description": "Helper function to delete tab",
+            "itemtype": "method",
+            "name": "handleDelete",
+            "params": [
+                {
+                    "name": "tab",
+                    "description": "Tab to be deleted",
+                    "type": "Tab"
+                }
+            ],
+            "class": "StoredTabList"
+        },
+        {
+            "file": "popup.js",
+            "line": 278,
+            "description": "Render this element",
+            "itemtype": "method",
+            "name": "render",
+            "class": "StoredTabList"
+        },
+        {
+            "file": "popup.js",
+            "line": 307,
+            "description": "Render this elemtent",
+            "itemtype": "method",
+            "name": "render",
+            "class": "Content"
+        },
+        {
+            "file": "popup.js",
+            "line": 342,
+            "description": "Initialize tab logic",
+            "itemtype": "method",
+            "name": "componentDidMount",
+            "class": "Content"
+        }
+    ],
+    "warnings": [
+        {
+            "message": "replacing incorrect tag: function with method",
+            "line": " popup.js:127"
+        },
+        {
+            "message": "replacing incorrect tag: function with method",
+            "line": " popup.js:246"
+        }
+    ]
+}
