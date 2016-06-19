@@ -165,10 +165,14 @@ var ActiveTabList = React.createClass({
         var headers = new Array()
         var tabs = new Array()
 
+        var window_number = 1
+
         for (var id in this.state.tabs){
             headers.push(
-                <a className="item" data-tab={id}>{id}</a>
+                <a className="item" data-tab={id}>{"Window " + window_number}</a>
             )
+
+            window_number += 1
 
             var buttons = this.state.tabs[id].map(function(tab){
                 return <TabButton 
