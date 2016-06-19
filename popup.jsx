@@ -1,3 +1,15 @@
+/**
+ * Standalone functions
+ * @class Standalone
+ */
+
+
+/**
+ * Saves tab to storage.sync
+ *
+ * @method saveTab
+ * @param {Tab} tab Info to save
+ */
 function saveTab(tab) {
     chrome.storage.sync.get({"tabs": []}, function(data){
         data.tabs.push(tab)
@@ -5,6 +17,12 @@ function saveTab(tab) {
     })
 }
 
+/**
+ * Deletes tab from storage.sync
+ *
+ * @method deleteTab
+ * @param {Tab} tab Item to delete - checks .id and .url
+ */
 function deleteTab(tab) {
     chrome.storage.sync.get({"tabs": []}, function(data){
         var index = data.tabs.lenght + 20
@@ -20,12 +38,36 @@ function deleteTab(tab) {
     })
 }
 
+/**
+ * React element for showing one tab
+ * @class TabButton
+ */
+
+/**
+ * Tab info 
+ * @property tab {Tab}
+ */
+
+/**
+ * Function callback called on clicking main button
+ * @property onClick {function}
+ */
+
+/**
+ * Function callback called on clikcking delete button
+ * @property onDelete {function}
+ */
+
 var TabButton = React.createClass({
+    /**
+     * Renders this element
+     * @method render
+     */
     render: function(){
         return (
             <div className="ui segments horizontal button">
                 <button className="ui small segment button" onClick={this.props.onClick} style={{width: "100%"}}> 
-                    <img src={this.props.tab.favIconUrl} style={{height:12, width:12}}/>  
+                    <img src={this.props.tab.favIconUrl} style={{height:15, width:15}}/>  
                       
                     {this.props.tab.title}
                 </button>
@@ -125,11 +167,29 @@ var ActiveTabList = React.createClass({
     }
 });
 
+/**
+ * React element for showing tabs held in storage.sync
+ * @class StoredTabList
+ */
 var StoredTabList = React.createClass({
+    /**
+     * Internal list of tabs
+     * @private
+     * @property tabs
+     */
+
+    /**
+     * Gets initial state of element
+     * @method getInitialState
+     */
     getInitialState: function(){
         return {tabs:[]}
     },
 
+    /**
+     * Reloads data from cloud storage
+     * @method reload
+     */
     reload: function(){
         chrome.storage.sync.get({tabs: []}, 
             function(data) {
@@ -138,6 +198,10 @@ var StoredTabList = React.createClass({
         )  
     },
 
+    /**
+     * Initialy fills component with data and registers listener
+     * @function componentDidMount
+     */
     componentDidMount: function() {
         this.reload()      
         chrome.storage.onChanged.addListener(function(changes, areaName){
@@ -145,21 +209,41 @@ var StoredTabList = React.createClass({
         }.bind(this))
     },
 
-    handleClick: function(tab){
+    /**
+     * Restore tab from cloud storage and erase it
+     * @method restoreTab
+     * @param {Tab} tab Info about restored tab
+     */
+    restoreTab: function(tab){
         deleteTab(tab)
         chrome.tabs.create({url: tab.url})
         this.reload()
     },
 
+    /**
+     * Helper function to delete tab
+     * @method handleDelete
+     * @param {Tab} tab Tab to be deleted
+     */
     handleDelete: function(tab) {
         deleteTab(tab)
         this.reload()
     },
 
+    /**
+     * Render this element
+     * @method render
+     */
     render: function() {
         var buttons = this.state.tabs.map(function(tab) {
                 return (
-                    <TabButton tab={tab} key={tab.id} onClick={this.handleClick.bind(this, tab)} onDelete={this.handleDelete.bind(this, tab)}></TabButton>
+                    <TabButton 
+                        tab={tab} 
+                        key={tab.id} 
+                        onClick={this.restoreTab.bind(this, tab)} 
+                        onDelete={this.handleDelete.bind(this, tab)}
+                    >
+                    </TabButton>
                 )
             }.bind(this)
         )
@@ -173,7 +257,16 @@ var StoredTabList = React.createClass({
 });
 
 
+
+/**
+ * Master react element. Holds ActiveTabList and StoredTabList
+ * @class Content
+ */
 var Content = React.createClass({
+    /**
+     * Render this elemtent
+     * @method render
+     */
     render: function() {
         return (
             <div>
@@ -191,6 +284,10 @@ var Content = React.createClass({
         )   
     },
 
+    /**
+     * Initialize tab logic
+     * @method componentDidMount
+     */
     componentDidMount: function(){
         $('.menu .item').tab();
     }
