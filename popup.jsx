@@ -151,10 +151,15 @@ var StoredTabList = React.createClass({
         this.reload()
     },
 
+    handleDelete: function(tab) {
+        deleteTab(tab)
+        this.reload()
+    },
+
     render: function() {
         var buttons = this.state.tabs.map(function(tab) {
                 return (
-                    <TabButton tab={tab} key={tab.id} onClick={this.handleClick.bind(this, tab)} onDelete={deleteTab.bind(tab)}></TabButton>
+                    <TabButton tab={tab} key={tab.id} onClick={this.handleClick.bind(this, tab)} onDelete={this.handleDelete.bind(this, tab)}></TabButton>
                 )
             }.bind(this)
         )
